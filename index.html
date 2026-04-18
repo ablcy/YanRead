@@ -1,161 +1,51 @@
 <!DOCTYPE html>
 <html lang="zh-CN" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YanLink - 短链接生成器</title>
-  <meta name="description" content="简洁优雅的短链接生成器，快速缩短你的长链接。由李成岩创建。">
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔗</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YanRead - 阅读推荐</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
 </head>
 <body>
-  <div class="glow glow-1"></div>
-  <div class="glow glow-2"></div>
-
-  <header class="header">
-    <div class="container">
-      <div class="logo">
-        <span class="logo-icon">🔗</span>
-        <span class="logo-text">YanLink</span>
-      </div>
-      <nav class="nav">
-        <a href="#create" class="nav-link active" data-section="create">创建短链</a>
-        <a href="#manage" class="nav-link" data-section="manage">我的链接</a>
-        <a href="#about" class="nav-link" data-section="about">关于</a>
-        <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
-          <span class="theme-icon">🌙</span>
-        </button>
-      </nav>
-    </div>
-  </header>
-
-  <main class="main">
-    <!-- 创建短链 -->
-    <section id="create" class="section active">
-      <div class="container">
-        <div class="hero">
-          <h1 class="hero-title">
-            <span class="gradient-text">缩短你的链接</span>
-          </h1>
-          <p class="hero-desc">
-            粘贴长链接，一键生成短链接。<br/>
-            简洁、快速、优雅。
-          </p>
-          <p class="hero-author">由 <a href="https://github.com/ablcy" target="_blank">李成岩</a> 创建</p>
-        </div>
-
-        <div class="card create-card">
-          <div class="input-group">
-            <div class="input-wrapper">
-              <span class="input-icon">🔗</span>
-              <input type="url" id="urlInput" class="input" placeholder="粘贴你的长链接..." autocomplete="off" spellcheck="false">
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo">📖 YanRead</a>
+            <div class="nav-links">
+                <a href="index.html" class="active">书单推荐</a>
+                <a href="about.html">关于</a>
             </div>
-            <button class="btn btn-primary" id="shortenBtn">
-              <span class="btn-text">缩短链接</span>
-              <span class="btn-loading" style="display:none;">生成中...</span>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="切换主题">
+                <span class="theme-icon">🌙</span>
             </button>
-          </div>
+        </div>
+    </nav>
 
-          <div class="options">
-            <label class="option">
-              <input type="text" id="customAlias" class="option-input" placeholder="自定义别名（可选）" maxlength="20" spellcheck="false">
-              <span class="option-hint">自定义短链后缀，如 mylink</span>
-            </label>
-          </div>
-
-          <div class="result" id="result" style="display:none;">
-            <div class="result-label">✅ 短链接已生成</div>
-            <div class="result-url" id="resultUrl"></div>
-            <div class="result-actions">
-              <button class="btn btn-copy" id="copyBtn">
-                <span>📋</span> 复制链接
-              </button>
-              <button class="btn btn-secondary" id="openBtn">
-                <span>↗️</span> 打开链接
-              </button>
+    <main class="container">
+        <section class="hero">
+            <h1>YanRead</h1>
+            <p>精选阅读推荐，发现好书与新知</p>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索书名、作者或分类..." oninput="filterBooks()">
             </div>
-          </div>
+        </section>
 
-          <div class="error" id="error" style="display:none;"></div>
-        </div>
+        <section class="categories" id="categories">
+            <button class="cat-btn active" data-cat="all" onclick="filterCategory('all')">全部</button>
+            <button class="cat-btn" data-cat="文学小说" onclick="filterCategory('文学小说')">文学小说</button>
+            <button class="cat-btn" data-cat="科技前沿" onclick="filterCategory('科技前沿')">科技前沿</button>
+            <button class="cat-btn" data-cat="商业经管" onclick="filterCategory('商业经管')">商业经管</button>
+            <button class="cat-btn" data-cat="人文社科" onclick="filterCategory('人文社科')">人文社科</button>
+            <button class="cat-btn" data-cat="心理成长" onclick="filterCategory('心理成长')">心理成长</button>
+        </section>
 
-        <div class="stats-bar">
-          <div class="stat">
-            <span class="stat-value" id="totalLinks">0</span>
-            <span class="stat-label">已创建链接</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value" id="totalClicks">0</span>
-            <span class="stat-label">总点击次数</span>
-          </div>
-        </div>
-      </div>
-    </section>
+        <section class="books-grid" id="booksGrid"></section>
+    </main>
 
-    <!-- 我的链接 -->
-    <section id="manage" class="section">
-      <div class="container">
-        <h2 class="section-title">我的链接</h2>
-        
-        <div class="search-bar">
-          <span class="search-icon">🔍</span>
-          <input type="text" id="searchInput" class="search-input" placeholder="搜索链接..." autocomplete="off">
-        </div>
+    <footer>
+        <p>© 2026 YanRead · <a href="https://github.com/ablcy/YanRead" target="_blank">GitHub</a></p>
+    </footer>
 
-        <div class="links-list" id="linksList">
-          <div class="empty-state" id="emptyState">
-            <span class="empty-icon">📭</span>
-            <p>还没有创建任何短链接</p>
-            <a href="#create" class="btn btn-primary btn-sm">去创建</a>
-          </div>
-        </div>
-
-        <div class="manage-actions" id="manageActions" style="display:none;">
-          <button class="btn btn-danger btn-sm" id="clearAllBtn">🗑️ 清空所有链接</button>
-          <button class="btn btn-secondary btn-sm" id="exportBtn">📥 导出数据</button>
-          <button class="btn btn-secondary btn-sm" id="importBtn">📤 导入数据</button>
-          <input type="file" id="importFile" accept=".json" style="display:none;">
-        </div>
-      </div>
-    </section>
-
-    <!-- 关于 -->
-    <section id="about" class="section">
-      <div class="container">
-        <div class="about-card">
-          <h2 class="section-title">关于 YanLink</h2>
-          <div class="about-content">
-            <p>
-              <strong>YanLink</strong> 是一个简洁优雅的短链接生成工具。
-              所有数据存储在浏览器本地（localStorage），无需注册，无需登录。
-            </p>
-            <h3>⚡ 功能特点</h3>
-            <ul>
-              <li>一键缩短长链接</li>
-              <li>支持自定义短链别名</li>
-              <li>链接管理与搜索</li>
-              <li>点击次数统计</li>
-              <li>数据导入/导出</li>
-              <li>深色/浅色主题切换</li>
-            </ul>
-            <h3>🔒 隐私说明</h3>
-            <p>所有链接数据仅存储在你的浏览器本地，不会上传到任何服务器。</p>
-            <h3>💡 使用提示</h3>
-            <p>短链接格式：<code>lcy.dpdns.org/#/你的别名</code>，你可以将此链接分享给他人，打开后会自动跳转到目标地址。</p>
-            <h3>🛠️ 技术栈</h3>
-            <p>纯静态 HTML/CSS/JS，无后端服务。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container">
-      <p>&copy; 2026 YanLink · 由 <a href="https://github.com/ablcy" class="footer-domain" target="_blank">李成岩</a> 创建 · Built with ❤️</p>
-    </div>
-  </footer>
-
-  <script src="app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

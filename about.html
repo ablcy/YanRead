@@ -1,71 +1,59 @@
 <!DOCTYPE html>
 <html lang="zh-CN" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>关于 - YanLink</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔗</text></svg>">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YanRead - 关于</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
 </head>
 <body>
-  <div class="glow glow-1"></div>
-  <div class="glow glow-2"></div>
-
-  <header class="header">
-    <div class="container">
-      <div class="logo">
-        <span class="logo-icon">🔗</span>
-        <span class="logo-text">YanLink</span>
-      </div>
-      <nav class="nav">
-        <a href="index.html#create" class="nav-link">创建短链</a>
-        <a href="index.html#manage" class="nav-link">我的链接</a>
-        <a href="about.html" class="nav-link active">关于</a>
-      </nav>
-    </div>
-  </header>
-
-  <main class="main">
-    <section class="section active">
-      <div class="container">
-        <div class="about-card">
-          <h2 class="section-title">关于 YanLink</h2>
-          <div class="about-content">
-            <p>
-              <strong>YanLink</strong> 是一个简洁优雅的短链接生成工具。
-              所有数据存储在浏览器本地（localStorage），无需注册，无需登录。
-            </p>
-            <h3>⚡ 功能特点</h3>
-            <ul>
-              <li>一键缩短长链接</li>
-              <li>支持自定义短链别名</li>
-              <li>链接管理与搜索</li>
-              <li>点击次数统计</li>
-              <li>数据导入/导出</li>
-              <li>深色/浅色主题切换</li>
-            </ul>
-            <h3>🔒 隐私说明</h3>
-            <p>所有链接数据仅存储在你的浏览器本地，不会上传到任何服务器。</p>
-            <h3>💡 使用提示</h3>
-            <p>短链接格式：<code>lcy.dpdns.org/#/你的别名</code>，分享给他人，打开后会自动跳转到目标地址。</p>
-            <h3>🛠️ 技术栈</h3>
-            <p>纯静态 HTML/CSS/JS，无后端服务。</p>
-          </div>
+    <nav class="navbar">
+        <div class="nav-content">
+            <a href="index.html" class="logo">📖 YanRead</a>
+            <div class="nav-links">
+                <a href="index.html">书单推荐</a>
+                <a href="about.html" class="active">关于</a>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="切换主题">
+                <span class="theme-icon">🌙</span>
+            </button>
         </div>
-      </div>
-    </section>
-  </main>
+    </nav>
 
-  <footer class="footer">
-    <div class="container">
-      <p>&copy; 2026 YanLink · 由 <a href="https://github.com/ablcy" class="footer-domain" target="_blank">李成岩</a> 创建 · Built with ❤️</p>
-    </div>
-  </footer>
+    <main class="container about-page">
+        <h1>关于 YanRead</h1>
+        <div class="about-content">
+            <p>YanRead 是一个精选阅读推荐网站，致力于为你发现值得阅读的好书。</p>
+            <h2>分类</h2>
+            <ul>
+                <li>📚 <strong>文学小说</strong> — 经典与现代文学作品</li>
+                <li>💻 <strong>科技前沿</strong> — 技术、AI、互联网趋势</li>
+                <li>💼 <strong>商业经管</strong> — 创业、管理、投资思维</li>
+                <li>🌍 <strong>人文社科</strong> — 历史、哲学、社会学</li>
+                <li>🧠 <strong>心理成长</strong> — 心理学、个人成长</li>
+            </ul>
+            <h2>技术</h2>
+            <p>纯静态网站，无需后端服务。部署在 GitHub Pages。</p>
+            <h2>作者</h2>
+            <p><a href="https://github.com/ablcy" target="_blank">LuckYan</a> · 爱好阅读与编程</p>
+        </div>
+    </main>
 
-  <script>
-    const saved = localStorage.getItem('yanlink_theme');
-    if (saved) document.documentElement.setAttribute('data-theme', saved);
-    else if (window.matchMedia('(prefers-color-scheme: light)').matches) document.documentElement.setAttribute('data-theme', 'light');
-  </script>
+    <footer>
+        <p>© 2026 YanRead · <a href="https://github.com/ablcy/YanRead" target="_blank">GitHub</a></p>
+    </footer>
+
+    <script>
+        const saved = localStorage.getItem('yanread-theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', saved);
+        document.querySelector('.theme-icon').textContent = saved === 'dark' ? '🌙' : '☀️';
+        function toggleTheme() {
+            const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', t);
+            localStorage.setItem('yanread-theme', t);
+            document.querySelector('.theme-icon').textContent = t === 'dark' ? '🌙' : '☀️';
+        }
+    </script>
 </body>
 </html>
